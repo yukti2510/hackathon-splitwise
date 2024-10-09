@@ -30,5 +30,13 @@ public class UserBalanceEntity {
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
     private Double amountPaid;
+
+    public UserBalanceEntity(UserBalanceEntity userBalanceEntity) {
+        this.groupId = userBalanceEntity.getGroupId();
+        this.user1 = userBalanceEntity.getUser1();
+        this.user2 = userBalanceEntity.getUser2();
+        this.amountPaid = userBalanceEntity.getAmountPaid();
+    }
+
 }
 

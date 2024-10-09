@@ -40,4 +40,13 @@ public class ExpenseEntity extends AbstractJpaEntity {
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
     private Double amountPaid;
+
+    public ExpenseEntity(ExpenseEntity expenseEntity) {
+        this.id = expenseEntity.getId();
+        this.name = expenseEntity.getName();
+        this.type = expenseEntity.getType();
+        this.groupId = expenseEntity.getGroupId();
+        this.amountPaid = expenseEntity.getAmountPaid();
+    }
+
 }

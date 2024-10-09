@@ -30,4 +30,12 @@ public class UserGroupMappingEntity {
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
     private Double amountPaid;
+
+    public UserGroupMappingEntity(UserGroupMappingEntity userGroupMappingEntity) {
+        this.groupId = userGroupMappingEntity.getGroupId();
+        this.userId = userGroupMappingEntity.getUserId();
+        this.isAdmin = userGroupMappingEntity.getIsAdmin();
+        this.amountPaid = userGroupMappingEntity.getAmountPaid();
+    }
+
 }

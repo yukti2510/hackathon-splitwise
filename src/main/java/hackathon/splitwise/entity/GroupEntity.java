@@ -34,4 +34,11 @@ public class GroupEntity extends AbstractJpaEntity {
     @Convert(converter = JsonConverter.class)
     @Column(name = "metadata", columnDefinition = "jsonb")
     private Map<String, String> metadata;
+
+    public GroupEntity(GroupEntity groupEntity) {
+        this.name = groupEntity.getName();
+        this.type = groupEntity.getType();
+        this.metadata = groupEntity.getMetadata();
+    }
+
 }

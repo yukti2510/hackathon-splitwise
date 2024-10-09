@@ -30,4 +30,12 @@ public class ExpenseBreakupEntity {
 
     @Column(name = "amount", columnDefinition = "DOUBLE", nullable = false)
     private Double amount;
+
+    public ExpenseBreakupEntity(ExpenseBreakupEntity expenseBreakupEntity) {
+        this.expenseId = expenseBreakupEntity.getExpenseId();
+        this.payerId = expenseBreakupEntity.getPayerId();
+        this.owerId = expenseBreakupEntity.getOwerId();
+        this.amount = expenseBreakupEntity.getAmount();
+    }
+
 }
