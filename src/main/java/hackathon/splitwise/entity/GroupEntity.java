@@ -1,6 +1,6 @@
 package hackathon.splitwise.entity;
 
-import hackathon.splitwise.convertor.JsonToMapConverter;
+import hackathon.splitwise.converter.JsonConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class GroupEntity extends AbstractJpaEntity {
     @Column(name = "type", columnDefinition = "VARCHAR(256)", nullable = false)
     private String type;
 
-    @Convert(converter = JsonToMapConverter.class)
+    @Convert(converter = JsonConverter.class)
     @Column(name = "metadata", columnDefinition = "jsonb")
     private Map<String, String> metadata;
 }
