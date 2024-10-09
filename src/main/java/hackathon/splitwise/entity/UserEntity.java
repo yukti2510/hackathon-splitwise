@@ -1,14 +1,8 @@
 package hackathon.splitwise.entity;
 
-import hackathon.splitwise.convertor.JsonToMapConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import hackathon.splitwise.converter.JsonConverter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Map;
 
@@ -34,9 +28,7 @@ public class UserEntity extends AbstractJpaEntity{
 
     @Column(name = "jupiter_user_id", columnDefinition = "VARCHAR(100)")
     private String jupiterUserId;
-
-    @Convert(converter = JsonToMapConverter.class)
-    @Column(name = "metadata", columnDefinition = "json", nullable = true)
+    @Convert(converter = JsonConverter.class)
     private Map<String, String> metadata;
 
     public UserEntity(UserEntity userEntity) {
