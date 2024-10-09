@@ -1,6 +1,8 @@
 package hackathon.splitwise.convertor;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -44,7 +46,7 @@ public class JsonToMapConverter implements AttributeConverter<Map, String> {
         }
 
         try {
-            return mapper.readValue(s, new TypeReference<Map<Object, Object>>() {
+            return mapper.readValue(s, new TypeReference<>() {
             });
 
         } catch (IOException e) {
