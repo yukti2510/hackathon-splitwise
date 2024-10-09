@@ -1,6 +1,5 @@
 package hackathon.splitwise.convertor;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
@@ -15,40 +14,32 @@ import java.util.Map;
  * @project hackathon-splitwise
  */
 @Converter
-public class JsonToMapConverter implements AttributeConverter<Map, String> {
-    private static ObjectMapper mapper;
+public class JsonToMapConverter implements AttributeConverter<Map<String, String>, String> {
 
-    static {
-        // To avoid instantiating ObjectMapper again and again.
-        mapper = new ObjectMapper();
-    }
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public String convertToDatabaseColumn(Map data) {
-        if (null == data) {
-            // You may return null if you prefer that style
-            return "{}";
+    public String convertToDatabaseColumn(Map<String, String> data) {
+        if (data == null) {
+            return "{}"; // Return an empty JSON object if the map is null
         }
 
         try {
             return mapper.writeValueAsString(data);
-
         } catch (IOException e) {
             throw new IllegalArgumentException("Error converting map to JSON", e);
         }
     }
 
     @Override
-    public Map<String, String> convertToEntityAttribute(String s) {
-        if (null == s) {
-            // You may return null if you prefer that style
-            return new HashMap<>();
+    public Map<String, String> convertToEntityAttribute(String json) {
+        if (json == null || json.isEmpty()) {
+            return new HashMap<>(); // Return an empty map if the JSON string is null or empty
         }
 
         try {
-            return mapper.readValue(s, new TypeReference<>() {
+            return mapper.readValue(json, new TypeReference<>() {
             });
-
         } catch (IOException e) {
             throw new IllegalArgumentException("Error converting JSON to map", e);
         }

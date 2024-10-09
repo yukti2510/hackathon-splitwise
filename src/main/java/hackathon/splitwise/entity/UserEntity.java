@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Map;
 
 /**
@@ -27,6 +26,7 @@ public class UserEntity extends AbstractJpaEntity{
 
     private static final long serialVersionUID = 323569917172517286L;
     @Column(name = "name", columnDefinition = "VARCHAR(256)")
+
     private String name;
 
     @Column(name = "phone", columnDefinition = "VARCHAR(256)", nullable = false)
