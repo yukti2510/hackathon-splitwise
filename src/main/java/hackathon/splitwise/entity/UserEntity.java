@@ -4,6 +4,7 @@ import hackathon.splitwise.converter.JsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -25,7 +26,7 @@ public class UserEntity extends AbstractJpaEntity{
     private String name;
 
     @Column(name = "phone", columnDefinition = "VARCHAR(256)", nullable = false)
-    private boolean phone;
+    private String phone;
 
     @Column(name = "jupiter_user_id", columnDefinition = "VARCHAR(100)")
     private String jupiterUserId;
@@ -34,7 +35,7 @@ public class UserEntity extends AbstractJpaEntity{
 
     public UserEntity(UserEntity userEntity) {
         this.name = userEntity.getName();
-        this.phone = userEntity.isPhone();
+        this.phone = userEntity.getPhone();
         this.jupiterUserId = userEntity.getJupiterUserId();
         this.metadata = userEntity.getMetadata();
     }
