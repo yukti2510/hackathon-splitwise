@@ -1,10 +1,7 @@
 package hackathon.splitwise.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import hackathon.splitwise.dto.UserDto;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,9 +10,10 @@ import java.util.List;
 @Data
 @Getter
 @Setter
+@Builder
 public class AddMembersToGroupRequestDto {
     private Long groupId;
-    private List<MemberDto> membersList;
+    private List<UserDto> membersList;
 }
 
 
