@@ -20,7 +20,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_group")
-public class GroupEntity extends AbstractJpaEntity {
+public class UserGroupEntity extends AbstractJpaEntity {
 
     @Serial
     private static final long serialVersionUID = 1234567890123456789L;
@@ -35,7 +35,7 @@ public class GroupEntity extends AbstractJpaEntity {
     @Column(name = "metadata", columnDefinition = "jsonb")
     private Map<String, String> metadata;
 
-    public GroupEntity(GroupEntity groupEntity) {
+    public UserGroupEntity(UserGroupEntity groupEntity) {
         this.name = groupEntity.getName();
         this.type = groupEntity.getType();
         this.metadata = groupEntity.getMetadata();

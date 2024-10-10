@@ -1,14 +1,10 @@
 package hackathon.splitwise.repository;
 
-import hackathon.splitwise.entity.GroupEntity;
-import hackathon.splitwise.entity.UserEntity;
+import hackathon.splitwise.entity.UserGroupEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
+public interface GroupRepository extends JpaRepository<UserGroupEntity, Long> {
 //    List<GroupEntity> findAllByPhone(String phone);
 }

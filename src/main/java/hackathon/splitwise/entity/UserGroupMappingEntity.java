@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 
 @Data
 @Entity
@@ -16,24 +15,23 @@ import jakarta.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_group_mapping")
-public class UserGroupMappingEntity {
+public class UserGroupMappingEntity extends AbstractJpaEntity {
 
-    @Id
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "user_id", columnDefinition = "VARCHAR(256)", nullable = false)
-    private String userId;
+    @Column(name = "phone", columnDefinition = "VARCHAR(256)", nullable = false)
+    private String phone;
 
-    @Column(name = "is_admin", nullable = false)
-    private Boolean isAdmin;
+    @Column(name = "is_admin")
+    private Boolean isAdmin = false;
 
-    @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
+    @Column(name = "amount_paid", columnDefinition = "DOUBLE")
     private Double amountPaid;
 
     public UserGroupMappingEntity(UserGroupMappingEntity userGroupMappingEntity) {
         this.groupId = userGroupMappingEntity.getGroupId();
-        this.userId = userGroupMappingEntity.getUserId();
+        this.phone = userGroupMappingEntity.getPhone();
         this.isAdmin = userGroupMappingEntity.getIsAdmin();
         this.amountPaid = userGroupMappingEntity.getAmountPaid();
     }

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 
 @Data
 @Entity
@@ -16,9 +15,8 @@ import jakarta.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_balance")
-public class UserBalanceEntity {
+public class UserBalanceEntity extends AbstractJpaEntity {
 
-    @Id
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 

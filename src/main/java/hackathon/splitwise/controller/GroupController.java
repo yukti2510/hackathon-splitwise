@@ -3,6 +3,7 @@ package hackathon.splitwise.controller;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
 import hackathon.splitwise.dto.response.GroupListResponseDto;
+import hackathon.splitwise.dto.request.AddMembersToGroupRequestDto;
 import hackathon.splitwise.service.GroupService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class GroupController {
     public GroupListResponseDto getGroupsList(@RequestHeader("phone") String phone) {
         log.info("Request to get groups list for phone: {}", phone);
         return groupService.getGroupsList(phone);
+    }
+
+    @PostMapping("/add-members")
+    public String addMembersToGroup(@RequestBody AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
+        return groupService.addMembersToGroup(addMembersToGroupRequestDto);
     }
 
 }
