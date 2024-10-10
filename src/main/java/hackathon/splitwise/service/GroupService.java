@@ -85,8 +85,13 @@ public class GroupService {
         List<GroupDetailsEntity> groupEntities = groupRepository.findAllById(groupIds);
         Double totalAmountPaid = userGroupMappingEntities.stream().mapToDouble(UserGroupMappingEntity::getAmountPaid)
                 .sum();
+        Map<Long, Long> groupMemberCountMap = new HashMap<>();
+        for (Long groupId : groupIds) {
+            Long memberCount = userGroupMappingRepository.countByGroupId(groupId);
+            groupMemberCountMap.put(groupId, memberCount);
+        }
         return GroupListResponseDto.builder()
-                .groupList(mapToGroupDtoList(groupEntities, userGroupMappingEntities))
+                .groupList(mapToGroupDtoList(groupEntities, userGroupMappingEntities, groupMemberCountMap))
                 .totalAmountPaid(totalAmountPaid)
                 .build();
     }
@@ -119,7 +124,7 @@ public class GroupService {
     public GroupDto getGroupDetailsById(String groupId, String phone) {
         GroupDetailsEntity groupDetailsEntity = groupRepository.findById(Long.parseLong(groupId)).get();
         UserGroupMappingEntity userGroupMappingEntity = userGroupMappingRepository.findByGroupIdAndPhone(groupDetailsEntity.getId(), phone);
-        return mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid());
+        return mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid(), 1L);
 
     }
 }
