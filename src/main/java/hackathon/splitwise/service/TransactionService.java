@@ -195,4 +195,14 @@ public class TransactionService {
         return amountInvolvedList;
     }
 
+
+    public List<TransactionDetailResponseDto> searchTransactions(String name, Long groupId) {
+        List<TransactionEntity> transactionEntityList = transactionRepository.findByGroupIdAndNameContaining(groupId, name);
+        List<TransactionBreakupEntity> transactionBreakupEntityList = transactionBreakupRepository.findAllByTransactionIdIn(transactionEntityList.stream().map(TransactionEntity::getId).collect(Collectors.toList()));
+        List<String> phoneNumbers = transactionBreakupEntityList.stream()
+                .map(TransactionBreakupEntity::getPayerPhone)
+                .collect(Collectors.toList());
+        List<UserEntity> userEntities = userRepository.findByPhoneIn(phoneNumbers);
+        return mapToTransactionDetailDto(transactionEntityList, transactionBreakupEntityList, userEntities, null);
+    }
 }

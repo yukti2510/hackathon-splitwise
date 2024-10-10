@@ -1,9 +1,9 @@
 package hackathon.splitwise.controller;
 
+import hackathon.splitwise.dto.TransactionDetailResponseDto;
 import hackathon.splitwise.dto.TransactionDto;
 import hackathon.splitwise.dto.request.TransactionRequestDto;
 import hackathon.splitwise.dto.response.AmountInvolvedResponseDto;
-import hackathon.splitwise.dto.response.CreateGroupResponseDto;
 import hackathon.splitwise.service.TransactionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 
 /**
  * @author gauravlikhar
@@ -41,4 +42,11 @@ public class TransactionController {
         log.info("Request to fetch amount involved for phone: {}, user2Phone: {}, groupId {}", phone, user2Phone, groupId);
         return transactionService.fetchNetAmountInvolved(phone, user2Phone, groupId);
     }
+
+    @GetMapping("/search")
+    public List<TransactionDetailResponseDto> searchTransactions(@RequestParam("name") String name, @RequestParam("groupId") Long groupId) {
+        log.info("Request to search transactions for name, and groupId: {}, {}", name, groupId);
+        return transactionService.searchTransactions(name, groupId);
+    }
+
 }
