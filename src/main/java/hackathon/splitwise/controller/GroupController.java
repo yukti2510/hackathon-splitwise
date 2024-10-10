@@ -37,7 +37,8 @@ public class GroupController {
 
     @PostMapping("/add-members")
     public String addMembersToGroup(@RequestBody AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
-        return groupService.addMembersToGroup(addMembersToGroupRequestDto);
+        groupService.addMembersToGroup(addMembersToGroupRequestDto);
+        return "Members added successfully";
     }
 
 }

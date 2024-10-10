@@ -1,10 +1,10 @@
 package hackathon.splitwise.service;
 
+import hackathon.splitwise.dto.UserDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
 import hackathon.splitwise.dto.response.GroupListResponseDto;
 import hackathon.splitwise.dto.request.AddMembersToGroupRequestDto;
-import hackathon.splitwise.dto.request.MemberDto;
 import hackathon.splitwise.entity.UserEntity;
 import hackathon.splitwise.entity.UserGroupEntity;
 import hackathon.splitwise.entity.UserGroupMappingEntity;
@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.util.List;
 
 /**
  * @author gauravlikhar
@@ -59,12 +58,17 @@ public class GroupService {
 
         UserGroupEntity groupEntity1 = groupRepository.saveAndFlush(groupEntity);
 
+        List<UserDto> groupMembersList =  addMembersToGroup(AddMembersToGroupRequestDto.builder()
+                .groupId(groupEntity1.getId())
+                .membersList(createGroupRequestDto.getMembersList())
+                .build());
+
             return CreateGroupResponseDto.builder()
                     .id(groupEntity1.getId())
                     .name(groupEntity1.getName())
                     .logo(groupEntity1.getMetadata().get("logo"))
                     .type(groupEntity1.getType())
-                    .membersList(createGroupRequestDto.getMembersList())
+                    .membersList(groupMembersList)
                     .creator(createGroupRequestDto.getCreator())
                     .build();
     }
@@ -80,23 +84,29 @@ public class GroupService {
                 .build();
     }
 
-    public String addMembersToGroup(AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
+    public List<UserDto> addMembersToGroup(AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
         log.info("Request to add members to group: {}", addMembersToGroupRequestDto);
-        List<MemberDto> memberDtoList = addMembersToGroupRequestDto.getMembersList();
-        for (MemberDto memberDto: memberDtoList) {
+        List<UserDto> userDtoList = addMembersToGroupRequestDto.getMembersList();
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (UserDto userDto: userDtoList) {
             UserGroupMappingEntity userGroupMappingEntity = new UserGroupMappingEntity();
             userGroupMappingEntity.setGroupId(addMembersToGroupRequestDto.getGroupId());
-            userGroupMappingEntity.setPhone(memberDto.getJupiterUserId());
+            userGroupMappingEntity.setPhone(userDto.getPhone());
             userGroupMappingRepository.saveAndFlush(userGroupMappingEntity);
-            if (userRepository.findByPhone(memberDto.getPhone()) == null) {
+            if (userRepository.findByPhone(userDto.getPhone()) == null) {
                 UserEntity userEntity = new UserEntity();
-                userEntity.setName(memberDto.getName());
-                userEntity.setJupiterUserId(memberDto.getJupiterUserId());
-                userEntity.setPhone(memberDto.getPhone());
-                userRepository.saveAndFlush(userEntity);
+                userEntity.setName(userDto.getName());
+                userEntity.setJupiterUserId(userDto.getJupiterUserId());
+                userEntity.setPhone(userDto.getPhone());
+                userEntities.add(userRepository.saveAndFlush(userEntity));
             }
         }
-        return "Successfully added members";
+        return userEntities.stream().map(userEntity -> UserDto.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .phone(userEntity.getPhone())
+                .jupiterUserId(userEntity.getJupiterUserId())
+                .build()).toList();
     }
 
 }
