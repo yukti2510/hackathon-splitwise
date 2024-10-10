@@ -1,8 +1,8 @@
 package hackathon.splitwise.controller;
 
-import hackathon.splitwise.dto.GroupDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
+import hackathon.splitwise.dto.response.GroupDetailsResponseDto;
 import hackathon.splitwise.dto.response.GroupListResponseDto;
 import hackathon.splitwise.dto.request.AddMembersToGroupRequestDto;
 import hackathon.splitwise.service.GroupService;
@@ -37,7 +37,7 @@ public class GroupController {
     }
 
     @GetMapping("/id/{group-id}")
-    public GroupDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestParam("phone") String phone) {
+    public GroupDetailsResponseDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestParam("phone") String phone) {
         log.info("Request to get groups details by id: {} and phone: {}", groupId, phone);
         return groupService.getGroupDetailsById(groupId, phone);
     }

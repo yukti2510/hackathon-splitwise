@@ -2,6 +2,7 @@ package hackathon.splitwise.dto;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,4 +23,5 @@ public class GroupDto {
     private String logo;
     private Double amountPaid;
     private Long totalMembers;
+    private Date createdDate;
 }

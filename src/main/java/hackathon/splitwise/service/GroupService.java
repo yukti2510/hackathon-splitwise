@@ -4,6 +4,7 @@ import hackathon.splitwise.dto.GroupDto;
 import hackathon.splitwise.dto.UserDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
+import hackathon.splitwise.dto.response.GroupDetailsResponseDto;
 import hackathon.splitwise.dto.response.GroupListResponseDto;
 import hackathon.splitwise.dto.request.AddMembersToGroupRequestDto;
 import hackathon.splitwise.entity.UserEntity;
@@ -83,6 +84,7 @@ public class GroupService {
                 .map(UserGroupMappingEntity::getGroupId)
                 .toList();
         List<GroupDetailsEntity> groupEntities = groupRepository.findAllById(groupIds);
+        groupEntities.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
         Double totalAmountPaid = userGroupMappingEntities.stream().mapToDouble(UserGroupMappingEntity::getAmountPaid)
                 .sum();
         Map<Long, Long> groupMemberCountMap = new HashMap<>();
@@ -121,11 +123,14 @@ public class GroupService {
                 .build()).toList();
     }
 
-    public GroupDto getGroupDetailsById(String groupId, String phone) {
+    public GroupDetailsResponseDto getGroupDetailsById(String groupId, String phone) {
         GroupDetailsEntity groupDetailsEntity = groupRepository.findById(Long.parseLong(groupId)).get();
         UserGroupMappingEntity userGroupMappingEntity = userGroupMappingRepository.findByGroupIdAndPhone(groupDetailsEntity.getId(), phone);
-        return mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid(), 1L);
+        GroupDto groupDto =  mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid(), 1L);
 
+        return GroupDetailsResponseDto.builder()
+                .group(groupDto)
+                .build();
     }
 
     public GroupListResponseDto searchGroups(String phone, String name) {
@@ -135,6 +140,7 @@ public class GroupService {
                 .map(UserGroupMappingEntity::getGroupId)
                 .toList();
         List<GroupDetailsEntity> groupEntities = groupRepository.findAllByIdAndNameContaining(groupIds, name);
+        groupEntities.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
         Double totalAmountPaid = userGroupMappingEntities.stream().mapToDouble(UserGroupMappingEntity::getAmountPaid)
                 .sum();
         Map<Long, Long> groupMemberCountMap = new HashMap<>();
