@@ -27,7 +27,7 @@ public class UserGroupMappingEntity extends AbstractJpaEntity {
     private Boolean isAdmin = false;
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE")
-    private Double amountPaid;
+    private Double amountPaid = 0.0;
 
     public UserGroupMappingEntity(UserGroupMappingEntity userGroupMappingEntity) {
         this.groupId = userGroupMappingEntity.getGroupId();

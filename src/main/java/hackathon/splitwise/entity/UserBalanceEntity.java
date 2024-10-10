@@ -27,7 +27,7 @@ public class UserBalanceEntity extends AbstractJpaEntity {
     private String user2;
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
-    private Double amountPaid;
+    private Double amountPaid = 0.0;
 
     public UserBalanceEntity(UserBalanceEntity userBalanceEntity) {
         this.groupId = userBalanceEntity.getGroupId();

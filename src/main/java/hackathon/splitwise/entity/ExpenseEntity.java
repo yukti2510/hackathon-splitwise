@@ -39,7 +39,7 @@ public class ExpenseEntity extends AbstractJpaEntity {
     private Long groupId;
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
-    private Double amountPaid;
+    private Double amountPaid = 0.0;
 
     public ExpenseEntity(ExpenseEntity expenseEntity) {
         this.id = expenseEntity.getId();

@@ -30,10 +30,10 @@ public class GroupController {
         return groupService.createGroup(createGroupRequestDto);
     }
 
-    @GetMapping("/groups-list")
-    public GroupListResponseDto getGroupsList(@RequestHeader("phone") String phone) {
-        log.info("Request to get groups list for phone: {}", phone);
-        return groupService.getGroupsList(phone);
+    @PostMapping("/add-members")
+    public String addMembersToGroup(@RequestBody AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
+        groupService.addMembersToGroup(addMembersToGroupRequestDto);
+        return "Members added successfully";
     }
 
     @GetMapping("/id/{group-id}")
@@ -42,10 +42,10 @@ public class GroupController {
         return groupService.getGroupDetailsById(groupId, phone);
     }
 
-    @PostMapping("/add-members")
-    public String addMembersToGroup(@RequestBody AddMembersToGroupRequestDto addMembersToGroupRequestDto) {
-        groupService.addMembersToGroup(addMembersToGroupRequestDto);
-        return "Members added successfully";
+    @GetMapping("/groups-list")
+    public GroupListResponseDto getGroupsList(@RequestHeader("phone") String phone) {
+        log.info("Request to get groups list for phone: {}", phone);
+        return groupService.getGroupsList(phone);
     }
 
 }

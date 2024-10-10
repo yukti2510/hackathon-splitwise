@@ -27,7 +27,7 @@ public class ExpenseBreakupEntity extends AbstractJpaEntity {
     private String owerId;
 
     @Column(name = "amount", columnDefinition = "DOUBLE", nullable = false)
-    private Double amount;
+    private Double amount = 0.0;
 
     public ExpenseBreakupEntity(ExpenseBreakupEntity expenseBreakupEntity) {
         this.expenseId = expenseBreakupEntity.getExpenseId();
