@@ -1,6 +1,6 @@
 package hackathon.splitwise.dto.response;
 
-import hackathon.splitwise.entity.UserGroupEntity;
+import hackathon.splitwise.dto.GroupDto;
 import lombok.*;
 
 import java.util.List;
@@ -18,5 +18,5 @@ import java.util.List;
 @Builder
 public class GroupListResponseDto {
     private Double totalAmountPaid;
-    private List<UserGroupEntity> groupList;
+    private List<GroupDto> groupList;
 }

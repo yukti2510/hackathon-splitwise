@@ -14,7 +14,7 @@ CREATE TABLE splitwise.user (
 );
 
 --Create group table
-CREATE TABLE splitwise.user_group (
+CREATE TABLE splitwise.group_details (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(40) NOT NULL UNIQUE,
     name VARCHAR(256) NOT NULL,

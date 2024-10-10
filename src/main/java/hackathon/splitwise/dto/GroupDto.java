@@ -21,5 +21,4 @@ public class GroupDto {
     private String type;
     private String logo;
     private Double amountPaid;
-    private List<UserDto> membersList;
 }
