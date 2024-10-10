@@ -1,10 +1,10 @@
 package hackathon.splitwise.controller;
 
+import hackathon.splitwise.dto.request.CreateUserRequestDto;
 import hackathon.splitwise.service.GroupService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * @author gauravlikhar
@@ -21,10 +21,9 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping("/test")
-    public String test() {
-        groupService.getGroup();
-        return "Application is running";
+    @PostMapping("/create")
+    public String createGroup(@RequestBody CreateUserRequestDto createUserRequestDto) {
+        return groupService.createGroup(createUserRequestDto);
     }
 
 }
