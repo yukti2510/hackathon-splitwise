@@ -12,5 +12,7 @@ public interface UserGroupMappingRepository extends JpaRepository<UserGroupMappi
 
     UserGroupMappingEntity findByGroupIdAndPhone(Long id, String phone);
 
+    List<UserGroupMappingEntity> findAllByGroupId(Long groupId);
+
     Long countByGroupId(Long groupId);
 }

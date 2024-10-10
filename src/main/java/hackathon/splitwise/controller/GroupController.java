@@ -37,7 +37,7 @@ public class GroupController {
     }
 
     @GetMapping("/id/{group-id}")
-    public GroupDetailsResponseDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestParam("phone") String phone) {
+    public GroupDetailsResponseDto getGroupDetailsById(@PathVariable("group-id") Long groupId, @RequestParam("phone") String phone) {
         log.info("Request to get groups details by id: {} and phone: {}", groupId, phone);
         return groupService.getGroupDetailsById(groupId, phone);
     }

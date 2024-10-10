@@ -1,6 +1,8 @@
 package hackathon.splitwise.service;
 
 import hackathon.splitwise.dto.GroupDto;
+import hackathon.splitwise.dto.TransactionDetailResponseDto;
+import hackathon.splitwise.dto.TransactionDto;
 import hackathon.splitwise.dto.UserDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
@@ -38,10 +40,13 @@ public class GroupService {
 
         private final UserGroupMappingRepository userGroupMappingRepository;
 
-        public GroupService(UserRepository userRepository, GroupRepository groupRepository, UserGroupMappingRepository userGroupMappingRepository) {
+        private final TransactionService transactionService;
+
+        public GroupService(UserRepository userRepository, GroupRepository groupRepository, UserGroupMappingRepository userGroupMappingRepository, TransactionService transactionService) {
             this.userRepository = userRepository;
             this.groupRepository = groupRepository;
             this.userGroupMappingRepository = userGroupMappingRepository;
+            this.transactionService = transactionService;
         }
 
         public void getGroup() {
@@ -123,13 +128,35 @@ public class GroupService {
                 .build()).toList();
     }
 
-    public GroupDetailsResponseDto getGroupDetailsById(String groupId, String phone) {
-        GroupDetailsEntity groupDetailsEntity = groupRepository.findById(Long.parseLong(groupId)).get();
-        UserGroupMappingEntity userGroupMappingEntity = userGroupMappingRepository.findByGroupIdAndPhone(groupDetailsEntity.getId(), phone);
-        GroupDto groupDto =  mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid(), 1L);
+    public GroupDetailsResponseDto getGroupDetailsById(Long groupId, String phone) {
+        GroupDetailsEntity groupDetailsEntity = groupRepository.findById(groupId).get();
+        List<UserGroupMappingEntity> userGroupMappingEntityList = userGroupMappingRepository.findAllByGroupId(groupDetailsEntity.getId());
+
+        UserGroupMappingEntity currentUserGroupMappingEntity = userGroupMappingEntityList.stream()
+                .filter(userGroupMappingEntity1 -> userGroupMappingEntity1.getPhone().equals(phone))
+                .findFirst().get();
+
+        GroupDto groupDto =  mapToGroupDto(groupDetailsEntity, currentUserGroupMappingEntity.getAmountPaid(), 1L);
+
+        List<String> membersPhoneList = userGroupMappingEntityList.stream()
+                .map(UserGroupMappingEntity::getPhone)
+                .toList();
+
+        List<UserEntity> userEntities = userRepository.findAllByPhoneIn(membersPhoneList);
+
+        List<UserDto> membersList = userEntities.stream().map(userEntity -> UserDto.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .phone(userEntity.getPhone())
+                .jupiterUserId(userEntity.getJupiterUserId())
+                .build()).toList();
+
+        List<TransactionDetailResponseDto> transactionDetailList = transactionService.getTransactionsList(groupId, phone);
 
         return GroupDetailsResponseDto.builder()
                 .group(groupDto)
+                .membersList(membersList)
+                .transactionsList(transactionDetailList)
                 .build();
     }
 

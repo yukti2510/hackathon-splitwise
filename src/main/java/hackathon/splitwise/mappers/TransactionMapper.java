@@ -1,10 +1,17 @@
 package hackathon.splitwise.mappers;
 
+import hackathon.splitwise.dto.TransactionDetailResponseDto;
 import hackathon.splitwise.dto.TransactionDto;
 import hackathon.splitwise.dto.request.Ower;
 import hackathon.splitwise.dto.request.TransactionRequestDto;
 import hackathon.splitwise.entity.TransactionBreakupEntity;
 import hackathon.splitwise.entity.TransactionEntity;
+import hackathon.splitwise.entity.UserEntity;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TransactionMapper {
 
@@ -39,5 +46,32 @@ public class TransactionMapper {
                 .groupId(transactionEntity.getGroupId())
                 .createdAt(transactionEntity.getCreatedAt())
                 .build();
+    }
+
+    public static List<TransactionDetailResponseDto> mapToTransactionDetailDto(
+            List<TransactionEntity> transactionEntityList,
+            List<TransactionBreakupEntity> transactionBreakupEntityList,
+            List<UserEntity> userEntities, String phone) {
+        Map<String, String> phoneToUserNameMap = userEntities.stream()
+                .collect(Collectors.toMap(UserEntity::getPhone, UserEntity::getName));
+        Map<Long, List<TransactionBreakupEntity>> transactionBreakupsMap = transactionBreakupEntityList.stream()
+                .collect(Collectors.groupingBy(TransactionBreakupEntity::getTransactionId));
+        return transactionEntityList.stream().sorted(Comparator.comparing(TransactionEntity::getCreatedAt).reversed()).map(transaction -> {
+            List<TransactionBreakupEntity> breakups = transactionBreakupsMap.getOrDefault(transaction.getId(), List.of());
+            String payerPhone = breakups.isEmpty() ? null : breakups.get(0).getPayerPhone();
+            String payerName = phoneToUserNameMap.getOrDefault(payerPhone, "Unknown");
+            return TransactionDetailResponseDto.builder()
+                    .id(transaction.getId())
+                    .name(transaction.getName())
+                    .type(transaction.getType())
+                    .createdAt(transaction.getCreatedAt())
+                    .splitType(transaction.getSplitType())
+                    .totalTransactionAmount(transaction.getAmount())
+                    .groupId(transaction.getGroupId())
+                    .payerName(payerName)
+                    .payerPhone(payerPhone)
+                    .amountPaid(breakups.stream().filter(it -> it.getOwerPhone().equals(phone)).mapToDouble(TransactionBreakupEntity::getAmount).sum())
+                    .build();
+        }).collect(Collectors.toList());
     }
 }

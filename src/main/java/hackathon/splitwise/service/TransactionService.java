@@ -1,22 +1,26 @@
 package hackathon.splitwise.service;
 
+import hackathon.splitwise.dto.TransactionDetailResponseDto;
 import hackathon.splitwise.dto.TransactionDto;
 import hackathon.splitwise.dto.request.Ower;
 import hackathon.splitwise.dto.request.TransactionRequestDto;
-import hackathon.splitwise.dto.response.CreateGroupResponseDto;
+import hackathon.splitwise.entity.TransactionBreakupEntity;
 import hackathon.splitwise.entity.TransactionEntity;
 import hackathon.splitwise.entity.UserBalanceEntity;
+import hackathon.splitwise.entity.UserEntity;
+import hackathon.splitwise.mappers.TransactionMapper;
 import hackathon.splitwise.repository.TransactionBreakupRepository;
 import hackathon.splitwise.repository.TransactionRepository;
 import hackathon.splitwise.repository.UserBalanceRepository;
+import hackathon.splitwise.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static hackathon.splitwise.mappers.TransactionMapper.mapToTransactionBreakupEntity;
-import static hackathon.splitwise.mappers.TransactionMapper.mapToTransactionDto;
-import static hackathon.splitwise.mappers.TransactionMapper.mapToTransactionEntity;
+import static hackathon.splitwise.mappers.TransactionMapper.*;
 
 /**
  * @author gauravlikhar
@@ -32,10 +36,13 @@ public class TransactionService {
 
     private final UserBalanceRepository userBalanceRepository;
 
-    public TransactionService(TransactionRepository transactionRepository, TransactionBreakupRepository transactionBreakupRepository, UserBalanceRepository userBalanceRepository) {
+    private final UserRepository userRepository;
+
+    public TransactionService(TransactionRepository transactionRepository, TransactionBreakupRepository transactionBreakupRepository, UserBalanceRepository userBalanceRepository, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionBreakupRepository = transactionBreakupRepository;
         this.userBalanceRepository = userBalanceRepository;
+        this.userRepository = userRepository;
     }
 
     public TransactionDto createTransaction(TransactionRequestDto transactionRequestDto) {
@@ -66,5 +73,15 @@ public class TransactionService {
             }
         }
         return mapToTransactionDto(transactionEntity);
+    }
+
+    public List<TransactionDetailResponseDto> getTransactionsList(Long groupId, String phone) {
+        List<TransactionEntity> transactionEntityList = transactionRepository.findByGroupId(groupId);
+        List<TransactionBreakupEntity> transactionBreakupEntityList = transactionBreakupRepository.findAllByTransactionIdIn(transactionEntityList.stream().map(TransactionEntity::getId).collect(Collectors.toList()));
+        List<String> phoneNumbers = transactionBreakupEntityList.stream()
+                .map(TransactionBreakupEntity::getPayerPhone)
+                .collect(Collectors.toList());
+        List<UserEntity> userEntities = userRepository.findByPhoneIn(phoneNumbers);
+        return mapToTransactionDetailDto(transactionEntityList, transactionBreakupEntityList, userEntities, phone);
     }
 }
