@@ -46,14 +46,23 @@ public class TransactionService {
             transactionBreakupRepository.saveAndFlush(mapToTransactionBreakupEntity(transactionEntity.getId(), payerPhone, ower));
 
             UserBalanceEntity user1ToUser2UserBalance = userBalanceRepository.findByGroupIdAndPayerPhoneAndOwerPhone(transactionRequestDto.getGroupId(), payerPhone, ower.getPhone());
-            UserBalanceEntity user2ToUser1UserBalance = userBalanceRepository.findByGroupIdAndOwerPhoneAndPayerPhone(transactionRequestDto.getGroupId(), ower.getPhone(), payerPhone);
+            UserBalanceEntity user2ToUser1UserBalance = userBalanceRepository.findByGroupIdAndPayerPhoneAndOwerPhone(transactionRequestDto.getGroupId(), ower.getPhone(), payerPhone);
             if (user1ToUser2UserBalance != null) {
-                insert with ower amount +
+                double amountPaid = Optional.ofNullable(user1ToUser2UserBalance.getAmountPaid()).orElse(0.0);
+                user1ToUser2UserBalance.setAmountPaid(amountPaid + ower.getAmountOwed());
+                userBalanceRepository.saveAndFlush(user1ToUser2UserBalance);
             } else if (user2ToUser1UserBalance != null) {
-                insert with ower amount -
+                double amountPaid = Optional.ofNullable(user2ToUser1UserBalance.getAmountPaid()).orElse(0.0);
+                user2ToUser1UserBalance.setAmountPaid(amountPaid - ower.getAmountOwed());
+                userBalanceRepository.saveAndFlush(user2ToUser1UserBalance);
             }
             else {
-                insert with ower amount +
+                UserBalanceEntity userBalanceEntity = new UserBalanceEntity();
+                userBalanceEntity.setGroupId(transactionRequestDto.getGroupId());
+                userBalanceEntity.setPayerPhone(payerPhone);
+                userBalanceEntity.setOwerPhone(ower.getPhone());
+                userBalanceEntity.setAmountPaid(ower.getAmountOwed());
+                userBalanceRepository.saveAndFlush(userBalanceEntity);
             }
         }
         return mapToTransactionDto(transactionEntity);
