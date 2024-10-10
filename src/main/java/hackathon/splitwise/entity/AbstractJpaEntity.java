@@ -31,14 +31,14 @@ public abstract class AbstractJpaEntity implements Serializable {
 
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
-    protected Date createdAt;
+    protected Date createdAt = new Date();
 
     @Column(name = "created_by", columnDefinition = "char(40)")
     protected String createdBy;
 
     @Column(name = "updated_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
-    protected Date updatedAt;
+    protected Date updatedAt = new Date();
 
     @Column(name = "updated_by", columnDefinition = "char(40)")
     protected String updatedBy;

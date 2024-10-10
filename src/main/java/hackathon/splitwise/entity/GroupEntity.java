@@ -19,7 +19,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "group")
+@Table(name = "user_group")
 public class GroupEntity extends AbstractJpaEntity {
 
     @Serial

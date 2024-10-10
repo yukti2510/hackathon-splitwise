@@ -1,6 +1,5 @@
-package hackathon.splitwise.dto.request;
+package hackathon.splitwise.dto;
 
-import hackathon.splitwise.dto.UserDto;
 import lombok.*;
 
 import java.util.List;
@@ -10,15 +9,17 @@ import java.util.List;
  * @project hackathon-splitwise
  */
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Getter
 @Setter
-public class CreateUserRequestDto {
-    private UserDto creator;
+public class GroupDto {
+    private long id;
     private String name;
     private String type;
     private String logo;
+    private Double amountPaid;
     private List<UserDto> membersList;
 }
