@@ -1,5 +1,6 @@
 package hackathon.splitwise.service;
 
+import hackathon.splitwise.dto.GroupDto;
 import hackathon.splitwise.dto.UserDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static hackathon.splitwise.mappers.GroupMapper.mapToGroupDto;
 import static hackathon.splitwise.mappers.GroupMapper.mapToGroupDtoList;
 
 /**
@@ -114,4 +116,10 @@ public class GroupService {
                 .build()).toList();
     }
 
+    public GroupDto getGroupDetailsById(String groupId, String phone) {
+        GroupDetailsEntity groupDetailsEntity = groupRepository.findById(Long.parseLong(groupId)).get();
+        UserGroupMappingEntity userGroupMappingEntity = userGroupMappingRepository.findByGroupIdAndPhone(groupDetailsEntity.getId(), phone);
+        return mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid());
+
+    }
 }

@@ -1,5 +1,6 @@
 package hackathon.splitwise.controller;
 
+import hackathon.splitwise.dto.GroupDto;
 import hackathon.splitwise.dto.request.CreateGroupRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
 import hackathon.splitwise.dto.response.GroupListResponseDto;
@@ -33,6 +34,12 @@ public class GroupController {
     public GroupListResponseDto getGroupsList(@RequestHeader("phone") String phone) {
         log.info("Request to get groups list for phone: {}", phone);
         return groupService.getGroupsList(phone);
+    }
+
+    @GetMapping("/id/{group-id}")
+    public GroupDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestHeader("phone") String phone) {
+        log.info("Request to get groups details by id: {} and phone: {}", groupId, phone);
+        return groupService.getGroupDetailsById(groupId, phone);
     }
 
     @PostMapping("/add-members")

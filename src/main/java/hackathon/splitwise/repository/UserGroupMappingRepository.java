@@ -10,4 +10,5 @@ import java.util.List;
 public interface UserGroupMappingRepository extends JpaRepository<UserGroupMappingEntity, Long> {
     List<UserGroupMappingEntity> findAllByPhone(String phone);
 
+    UserGroupMappingEntity findByGroupIdAndPhone(Long id, String phone);
 }
