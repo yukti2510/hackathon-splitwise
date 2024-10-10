@@ -20,19 +20,19 @@ public class UserBalanceEntity extends AbstractJpaEntity {
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "user_1", columnDefinition = "VARCHAR(100)", nullable = false)
-    private String user1;
+    @Column(name = "payer_phone", columnDefinition = "VARCHAR(256)", nullable = false)
+    private String payerPhone;
 
-    @Column(name = "user_2", columnDefinition = "VARCHAR(100)", nullable = false)
-    private String user2;
+    @Column(name = "ower_phone", columnDefinition = "VARCHAR(256)", nullable = false)
+    private String owerPhone;
 
     @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
     private Double amountPaid = 0.0;
 
     public UserBalanceEntity(UserBalanceEntity userBalanceEntity) {
         this.groupId = userBalanceEntity.getGroupId();
-        this.user1 = userBalanceEntity.getUser1();
-        this.user2 = userBalanceEntity.getUser2();
+        this.payerPhone = userBalanceEntity.getPayerPhone();
+        this.owerPhone = userBalanceEntity.getOwerPhone();
         this.amountPaid = userBalanceEntity.getAmountPaid();
     }
 
