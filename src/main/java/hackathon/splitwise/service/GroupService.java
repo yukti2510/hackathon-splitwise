@@ -127,4 +127,24 @@ public class GroupService {
         return mapToGroupDto(groupDetailsEntity, userGroupMappingEntity.getAmountPaid(), 1L);
 
     }
+
+    public GroupListResponseDto searchGroups(String phone, String name) {
+        log.info("Request to search groups for phone: {} and text: {}", phone, name);
+        List<UserGroupMappingEntity> userGroupMappingEntities = userGroupMappingRepository.findAllByPhone(phone);
+        List<Long> groupIds = userGroupMappingEntities.stream()
+                .map(UserGroupMappingEntity::getGroupId)
+                .toList();
+        List<GroupDetailsEntity> groupEntities = groupRepository.findAllByIdAndNameContaining(groupIds, name);
+        Double totalAmountPaid = userGroupMappingEntities.stream().mapToDouble(UserGroupMappingEntity::getAmountPaid)
+                .sum();
+        Map<Long, Long> groupMemberCountMap = new HashMap<>();
+        for (Long groupId : groupIds) {
+            Long memberCount = userGroupMappingRepository.countByGroupId(groupId);
+            groupMemberCountMap.put(groupId, memberCount);
+        }
+        return GroupListResponseDto.builder()
+                .groupList(mapToGroupDtoList(groupEntities, userGroupMappingEntities, groupMemberCountMap))
+                .totalAmountPaid(totalAmountPaid)
+                .build();
+    }
 }

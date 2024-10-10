@@ -37,15 +37,21 @@ public class GroupController {
     }
 
     @GetMapping("/id/{group-id}")
-    public GroupDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestHeader("phone") String phone) {
+    public GroupDto getGroupDetailsById(@PathVariable("group-id") String groupId, @RequestParam("phone") String phone) {
         log.info("Request to get groups details by id: {} and phone: {}", groupId, phone);
         return groupService.getGroupDetailsById(groupId, phone);
     }
 
     @GetMapping("/groups-list")
-    public GroupListResponseDto getGroupsList(@RequestHeader("phone") String phone) {
+    public GroupListResponseDto getGroupsList(@RequestParam("phone") String phone) {
         log.info("Request to get groups list for phone: {}", phone);
         return groupService.getGroupsList(phone);
+    }
+
+    @GetMapping("/search")
+    public GroupListResponseDto searchGroups(@RequestParam("phone") String phone, @RequestParam("name") String name) {
+        log.info("Request to search groups for phone: {} and name: {}", phone, name);
+        return groupService.searchGroups(phone, name);
     }
 
 }
