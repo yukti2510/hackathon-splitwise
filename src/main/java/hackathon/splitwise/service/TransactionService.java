@@ -8,7 +8,6 @@ import hackathon.splitwise.entity.TransactionBreakupEntity;
 import hackathon.splitwise.entity.TransactionEntity;
 import hackathon.splitwise.entity.UserBalanceEntity;
 import hackathon.splitwise.entity.UserEntity;
-import hackathon.splitwise.mappers.TransactionMapper;
 import hackathon.splitwise.repository.TransactionBreakupRepository;
 import hackathon.splitwise.repository.TransactionRepository;
 import hackathon.splitwise.repository.UserBalanceRepository;
@@ -83,5 +82,15 @@ public class TransactionService {
                 .collect(Collectors.toList());
         List<UserEntity> userEntities = userRepository.findByPhoneIn(phoneNumbers);
         return mapToTransactionDetailDto(transactionEntityList, transactionBreakupEntityList, userEntities, phone);
+    }
+
+    public List<TransactionDetailResponseDto> searchTransactions(String name, Long groupId) {
+        List<TransactionEntity> transactionEntityList = transactionRepository.findByGroupIdAndNameContaining(groupId, name);
+        List<TransactionBreakupEntity> transactionBreakupEntityList = transactionBreakupRepository.findAllByTransactionIdIn(transactionEntityList.stream().map(TransactionEntity::getId).collect(Collectors.toList()));
+        List<String> phoneNumbers = transactionBreakupEntityList.stream()
+                .map(TransactionBreakupEntity::getPayerPhone)
+                .collect(Collectors.toList());
+        List<UserEntity> userEntities = userRepository.findByPhoneIn(phoneNumbers);
+        return mapToTransactionDetailDto(transactionEntityList, transactionBreakupEntityList, userEntities, null);
     }
 }
