@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Payer {
     private String phone; // Phone number of the payer
-    private String amountPaid; // Amount paid by the payer
+    private Double amountPaid; // Amount paid by the payer
 }

@@ -28,13 +28,15 @@ CREATE TABLE splitwise.group_details (
 );
 
 --Create expense table
-CREATE TABLE splitwise.expense (
+CREATE TABLE splitwise.transactions (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(40) NOT NULL UNIQUE,
     name VARCHAR(256),
-    type VARCHAR(256),
+    type VARCHAR(256) NOT NULL,
+    split_type VARCHAR(256) NOT NULL,
+    jupiter_txn_id VARCHAR(256),
     group_id BIGINT NOT NULL,
-    amount_paid DOUBLE NOT NULL,
+    amount DOUBLE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by CHAR(40),
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -73,12 +75,12 @@ CREATE TABLE splitwise.user_balance (
 );
 
 --Create expense_breakup table
-CREATE TABLE splitwise.expense_breakup (
+CREATE TABLE splitwise.transaction_breakup (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(40) NOT NULL UNIQUE,
-    expense_id BIGINT NOT NULL,
-    payer_id VARCHAR(256) NOT NULL,
-    ower_id VARCHAR(256) NOT NULL,
+    transaction_id BIGINT NOT NULL,
+    payer_phone VARCHAR(256) NOT NULL,
+    ower_phone VARCHAR(256) NOT NULL,
     amount DOUBLE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by CHAR(40),

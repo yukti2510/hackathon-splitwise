@@ -1,10 +1,10 @@
 package hackathon.splitwise.repository;
 
-import hackathon.splitwise.entity.ExpenseBreakupEntity;
+import hackathon.splitwise.entity.TransactionBreakupEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExpenseBreakupRepository extends JpaRepository<ExpenseBreakupEntity, Long> {
+public interface TransactionBreakupRepository extends JpaRepository<TransactionBreakupEntity, Long> {
 
 }

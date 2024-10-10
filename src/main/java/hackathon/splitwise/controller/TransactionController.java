@@ -1,5 +1,6 @@
 package hackathon.splitwise.controller;
 
+import hackathon.splitwise.dto.TransactionDto;
 import hackathon.splitwise.dto.request.TransactionRequestDto;
 import hackathon.splitwise.dto.response.CreateGroupResponseDto;
 import hackathon.splitwise.service.TransactionService;
@@ -23,8 +24,9 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-//    @PostMapping("/create")
-//    public CreateGroupResponseDto createTransaction(@RequestBody TransactionRequestDto transactionRequestDto) {
-//        return transactionService.createTransaction(transactionRequestDto);
-//    }
+    @PostMapping("/create")
+    public TransactionDto createTransaction(@RequestBody TransactionRequestDto transactionRequestDto) {
+        log.info("Request to add transaction {}", transactionRequestDto);
+        return transactionService.createTransaction(transactionRequestDto);
+    }
 }

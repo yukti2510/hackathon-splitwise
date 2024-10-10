@@ -17,6 +17,7 @@ public class TransactionRequestDto {
     private SplitType splitType;
     private List<Payer> payersList;
     private List<Ower> oweersList;
-    private String groupId;
+    private Long groupId;
     private TransactionType type;
+    private Double amount;
 }

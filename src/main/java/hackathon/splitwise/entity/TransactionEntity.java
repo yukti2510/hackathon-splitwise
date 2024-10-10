@@ -19,8 +19,8 @@ import java.io.Serial;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "expense")
-public class ExpenseEntity extends AbstractJpaEntity {
+@Table(name = "transactions")
+public class TransactionEntity extends AbstractJpaEntity {
 
     @Serial
     private static final long serialVersionUID = 9876543210123489L;
@@ -35,18 +35,26 @@ public class ExpenseEntity extends AbstractJpaEntity {
     @Column(name = "type", columnDefinition = "VARCHAR(256)", nullable = false)
     private String type;
 
+    @Column(name = "jupiter_txn_id", columnDefinition = "VARCHAR(256)")
+    private String jupiterTxnId;
+
+    @Column(name = "split_type", columnDefinition = "VARCHAR(256)", nullable = false)
+    private String splitType;
+
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "amount_paid", columnDefinition = "DOUBLE", nullable = false)
-    private Double amountPaid = 0.0;
+    @Column(name = "amount", columnDefinition = "DOUBLE", nullable = false)
+    private Double amount = 0.0;
 
-    public ExpenseEntity(ExpenseEntity expenseEntity) {
-        this.id = expenseEntity.getId();
-        this.name = expenseEntity.getName();
-        this.type = expenseEntity.getType();
-        this.groupId = expenseEntity.getGroupId();
-        this.amountPaid = expenseEntity.getAmountPaid();
+    public TransactionEntity(TransactionEntity transactionEntity) {
+        this.id = transactionEntity.getId();
+        this.name = transactionEntity.getName();
+        this.type = transactionEntity.getType();
+        this.splitType = transactionEntity.getSplitType();
+        this.groupId = transactionEntity.getGroupId();
+        this.amount = transactionEntity.getAmount();
+        this.jupiterTxnId = transactionEntity.getJupiterTxnId();
     }
 
 }
