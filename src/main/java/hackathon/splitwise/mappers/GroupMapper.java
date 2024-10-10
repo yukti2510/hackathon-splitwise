@@ -28,7 +28,8 @@ public class GroupMapper {
                 groupEntity.getType(),
                 groupEntity.getMetadata().get("logo"),
                 amountPaid,
-                memberCount
+                memberCount,
+                groupEntity.getCreatedAt()
         );
     }
 }
