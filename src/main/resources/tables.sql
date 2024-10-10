@@ -1,6 +1,7 @@
 --Create user table
 CREATE TABLE splitwise.user (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uuid CHAR(40) NOT NULL UNIQUE,
     name VARCHAR(256),
     phone VARCHAR(256) NOT NULL,
     jupiter_user_id VARCHAR(100),
@@ -59,6 +60,7 @@ CREATE TABLE splitwise.user_group_mapping (
 --Create user_balance table
 CREATE TABLE splitwise.user_balance (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uuid CHAR(40) NOT NULL UNIQUE,
     group_id BIGINT NOT NULL,
     user_1 VARCHAR(256) NOT NULL,
     user_2 VARCHAR(256) NOT NULL,
