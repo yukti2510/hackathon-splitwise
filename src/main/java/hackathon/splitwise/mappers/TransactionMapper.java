@@ -70,8 +70,12 @@ public class TransactionMapper {
                     .groupId(transaction.getGroupId())
                     .payerName(payerName)
                     .payerPhone(payerPhone)
-                    .amountPaid(breakups.stream().filter(it -> it.getOwerPhone().equals(phone)).mapToDouble(TransactionBreakupEntity::getAmount).sum())
-                    .build();
+                    .amountPaid(breakups.stream()
+                        .mapToDouble(it -> it.getPayerPhone().equals(phone) ? it.getAmount()
+                        : it.getOwerPhone().equals(phone) ? -it.getAmount()
+                        : 0)
+                        .sum()
+                    ).build();
         }).collect(Collectors.toList());
     }
 }

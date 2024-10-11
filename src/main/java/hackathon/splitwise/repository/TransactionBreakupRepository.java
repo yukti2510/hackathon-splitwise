@@ -11,4 +11,6 @@ import java.util.stream.Stream;
 public interface TransactionBreakupRepository extends JpaRepository<TransactionBreakupEntity, Long> {
 
     List<TransactionBreakupEntity> findAllByTransactionIdIn(List<Long> transactionIds);
+
+    List<TransactionBreakupEntity> findAllByPayerPhoneAndOwerPhone(String payerPhone, String owerPhone);
 }

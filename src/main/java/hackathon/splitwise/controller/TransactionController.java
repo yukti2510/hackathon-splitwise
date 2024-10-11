@@ -2,6 +2,7 @@ package hackathon.splitwise.controller;
 
 import hackathon.splitwise.dto.TransactionDetailResponseDto;
 import hackathon.splitwise.dto.TransactionDto;
+import hackathon.splitwise.dto.request.SettleUserRequestDto;
 import hackathon.splitwise.dto.request.TransactionRequestDto;
 import hackathon.splitwise.dto.response.AmountInvolvedResponseDto;
 import hackathon.splitwise.service.TransactionService;
@@ -43,10 +44,16 @@ public class TransactionController {
         return transactionService.fetchNetAmountInvolved(phone, user2Phone, groupId);
     }
 
+    @PostMapping("/settle-user")
+    public String settleUser(@RequestBody SettleUserRequestDto settleUserRequestDto) {
+        log.info("Request to settle user {}", settleUserRequestDto);
+        return transactionService.settleUser(settleUserRequestDto);
+    }
+
     @GetMapping("/search")
-    public List<TransactionDetailResponseDto> searchTransactions(@RequestParam("name") String name, @RequestParam("groupId") Long groupId) {
-        log.info("Request to search transactions for name, and groupId: {}, {}", name, groupId);
-        return transactionService.searchTransactions(name, groupId);
+    public List<TransactionDetailResponseDto> searchTransactions(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("phone") String phone) {
+        log.info("Request to search transactions for name {}, and groupId: {}, phone {}", name, groupId, phone);
+        return transactionService.searchTransactions(name, groupId, phone);
     }
 
 }

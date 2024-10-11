@@ -120,7 +120,10 @@ public class GroupService {
                 userEntities.add(userRepository.saveAndFlush(userEntity));
             }
         }
-        return userEntities.stream().map(userEntity -> UserDto.builder()
+
+        List<UserEntity> userEntities1 = userRepository.findAllByPhoneIn(userDtoList.stream().map(UserDto::getPhone).toList());
+
+        return userEntities1.stream().map(userEntity -> UserDto.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
                 .phone(userEntity.getPhone())
@@ -152,7 +155,7 @@ public class GroupService {
                 .build()).toList();
 
         List<TransactionDetailResponseDto> transactionDetailList = transactionService.getTransactionsList(groupId, phone);
-
+        groupDto.setTotalMembers((long) membersList.size());
         return GroupDetailsResponseDto.builder()
                 .group(groupDto)
                 .membersList(membersList)
