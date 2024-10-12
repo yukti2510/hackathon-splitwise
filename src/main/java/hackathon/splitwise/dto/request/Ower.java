@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class Ower {
     private String phone; // Phone number of the ower
     private Double amountOwed; // Amount owed by the ower
+    private String name; // Name of the ower
 }

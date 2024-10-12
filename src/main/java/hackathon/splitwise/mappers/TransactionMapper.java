@@ -60,6 +60,7 @@ public class TransactionMapper {
             List<TransactionBreakupEntity> breakups = transactionBreakupsMap.getOrDefault(transaction.getId(), List.of());
             String payerPhone = breakups.isEmpty() ? null : breakups.get(0).getPayerPhone();
             String payerName = phoneToUserNameMap.getOrDefault(payerPhone, "Unknown");
+
             return TransactionDetailResponseDto.builder()
                     .id(transaction.getId())
                     .name(transaction.getName())
@@ -70,6 +71,11 @@ public class TransactionMapper {
                     .groupId(transaction.getGroupId())
                     .payerName(payerName)
                     .payerPhone(payerPhone)
+                    .owerList(breakups.stream().map(breakup -> Ower.builder()
+                            .phone(breakup.getOwerPhone())
+                            .amountOwed(breakup.getAmount())
+                            .name(phoneToUserNameMap.getOrDefault(breakup.getOwerPhone(), "Unknown"))
+                            .build()).collect(Collectors.toList()))
                     .amountPaid(breakups.stream()
                         .mapToDouble(it -> it.getPayerPhone().equals(phone) ? it.getAmount()
                         : it.getOwerPhone().equals(phone) ? -it.getAmount()
